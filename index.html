@@ -3,136 +3,191 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You ❤️</title>
+<title>For Anu ❤️</title>
 
 <style>
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,#ffd6e7,#fff0f5);
-  overflow-x:hidden;
-}
-
-/* floating hearts */
-.heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:20px;
-  animation:float 8s linear infinite;
-  opacity:0.6;
-}
-@keyframes float{
-  0%{transform:translateY(0)}
-  100%{transform:translateY(-110vh)}
-}
-
-/* header glass card */
-.header{
-  margin:20px;
-  padding:20px;
-  border-radius:25px;
-  background:rgba(255,255,255,0.35);
-  backdrop-filter:blur(10px);
-  box-shadow:0 6px 20px rgba(0,0,0,0.15);
   text-align:center;
 }
 
+/* pages */
+.page{display:none;padding:20px;}
+.active{display:block}
+
+/* intro */
+#intro{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#ff9ecb,#ffd6e7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  color:white;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* timer */
 .timer{
   font-size:22px;
   font-weight:bold;
   color:#ff4d88;
+  margin-bottom:10px;
 }
 
-.message{
-  margin-top:10px;
+/* buttons */
+button{
+  padding:12px 24px;
   font-size:18px;
-  color:#333;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  margin:10px;
+}
+.yes{background:#ff4d88;color:white}
+.no{background:#ddd;position:absolute}
+
+/* images */
+.main-photo{
+  width:85%;
+  max-width:350px;
+  border-radius:20px;
+  margin:20px auto;
 }
 
-/* carousel */
+/* gallery */
 .carousel{
   display:flex;
   overflow-x:auto;
-  scroll-snap-type:x mandatory;
   gap:20px;
   padding:20px;
 }
-
 .carousel img{
   flex:0 0 80%;
   height:320px;
   object-fit:cover;
   border-radius:25px;
-  scroll-snap-align:center;
   box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
-/* footer */
-.footer{
-  text-align:center;
-  font-size:22px;
-  font-weight:bold;
-  margin:20px;
-  color:#ff4d88;
+.message{font-size:18px;margin-top:10px}
+
+/* popup */
+#popup{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.4);
+  color:white;
+  font-size:28px;
+}
+
+/* confetti */
+.confetti{
+  position:fixed;
+  width:10px;
+  height:10px;
+  background:red;
+  animation:fall 3s linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(100vh) rotate(360deg);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div class="timer" id="timer"></div>
-  <div class="message">
-    I miss you so much, I know things are a little awkward rn, but I love you ❤️
-  </div>
+<!-- INTRO -->
+<div id="intro" onclick="startApp()">Tap to open ❤️</div>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page">
+  <div class="timer" id="timer1"></div>
+
+  <img src="us.jpg" class="main-photo">
+
+  <h2>Anu, will you be my Valentine? ❤️</h2>
+
+  <button class="yes" onclick="showLove()">YES</button>
+  <button class="no" id="noBtn">NO</button>
 </div>
 
-<div class="carousel" id="carousel"></div>
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+  <div class="timer" id="timer2"></div>
 
-<div class="footer">
-  Will you be my Valentine?
+  <p class="message">
+  I miss you so much, I know things are a little awkward rn, but I love you ❤️
+  </p>
+
+  <div class="carousel" id="carousel"></div>
 </div>
+
+<div id="popup">I love you Anu ❤️</div>
 
 <script>
-/* timer */
-const startDate = new Date("2024-10-25");
+function startApp(){
+  intro.style.display="none";
+  page1.classList.add("active");
+}
 
+/* TIMER */
+const startDate=new Date("2024-10-25");
 function updateTimer(){
-  const now = new Date();
-  const diff = now - startDate;
-
-  const days = Math.floor(diff/(1000*60*60*24));
-  const hours = Math.floor((diff/(1000*60*60))%24);
-  const mins = Math.floor((diff/(1000*60))%60);
-
-  document.getElementById("timer").innerHTML =
-    days+" days "+hours+" hrs "+mins+" mins together ❤️";
+  const diff=new Date()-startDate;
+  const d=Math.floor(diff/(1000*60*60*24));
+  const h=Math.floor(diff/(1000*60*60)%24);
+  const m=Math.floor(diff/(1000*60)%60);
+  const txt=d+" days "+h+" hrs "+m+" mins together ❤️";
+  timer1.innerHTML=txt;
+  timer2.innerHTML=txt;
 }
 setInterval(updateTimer,1000);
 updateTimer();
 
-/* images auto load */
-const images=["us.jpg"];
-for(let i=1;i<=22;i++){
-  images.push("image"+i+".jpg");
-}
-const carousel=document.getElementById("carousel");
-images.forEach(src=>{
-  const img=document.createElement("img");
-  img.src=src;
-  carousel.appendChild(img);
+/* FLOATING NO */
+noBtn.addEventListener("mouseover",()=>{
+  noBtn.style.top=Math.random()*80+"vh";
+  noBtn.style.left=Math.random()*80+"vw";
 });
 
-/* floating hearts generator */
-setInterval(()=>{
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerHTML="❤️";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.animationDuration=(5+Math.random()*5)+"s";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),8000);
-},800);
+/* YES CLICK */
+function showLove(){
+  popup.style.display="flex";
+  createConfetti();
+  setTimeout(()=>{
+    popup.style.display="none";
+    page1.classList.remove("active");
+    page2.classList.add("active");
+  },2000);
+}
+
+/* confetti */
+function createConfetti(){
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},80%,60%)`;
+    c.style.animationDuration=(2+Math.random()*2)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+/* gallery */
+for(let i=1;i<=22;i++){
+  const img=document.createElement("img");
+  img.src="image"+i+".jpg";
+  carousel.appendChild(img);
+}
 </script>
 
 </body>
