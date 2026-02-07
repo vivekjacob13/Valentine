@@ -13,13 +13,11 @@ body{
   font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,#ffd6e7,#fff0f5);
   text-align:center;
-  overflow-x:hidden;
 }
 
 .page{display:none;padding:20px;}
 .active{display:block}
 
-/* intro */
 #intro{
   position:fixed;
   inset:0;
@@ -32,21 +30,29 @@ body{
   cursor:pointer;
 }
 
-/* heading cute glow */
-.valentine-title{
+/* ANU glow */
+.anu-glow{
   font-family:'Pacifico',cursive;
-  font-size:34px;
+  font-size:40px;
   color:#ff2e75;
-  text-shadow:
-    0 0 8px rgba(255,120,170,0.9),
-    0 0 18px rgba(255,120,170,0.6),
-    0 0 28px rgba(255,120,170,0.4);
+  text-shadow:0 0 8px rgba(255,120,170,0.9),0 0 18px rgba(255,120,170,0.6),0 0 28px rgba(255,120,170,0.4);
 }
 
-/* timer */
+/* cute subtitle */
+.valentine-sub{
+  font-family:'Pacifico',cursive;
+  font-size:26px;
+  color:#ff4d88;
+  margin-bottom:10px;
+}
+
+/* cute font general */
+.cute-font{
+  font-family:'Pacifico',cursive;
+}
+
 .timer{
   font-size:22px;
-  font-weight:bold;
   color:#ff4d88;
   margin-bottom:10px;
 }
@@ -69,7 +75,6 @@ button{
   margin:20px auto;
 }
 
-/* gallery */
 .carousel{
   display:flex;
   overflow-x:auto;
@@ -83,6 +88,7 @@ button{
   border-radius:25px;
 }
 
+/* popup box */
 #popup{
   position:fixed;
   inset:0;
@@ -90,32 +96,22 @@ button{
   align-items:center;
   justify-content:center;
   background:rgba(0,0,0,0.4);
-  color:white;
+}
+.popup-box{
+  background:white;
+  color:#ff2e75;
+  padding:25px 40px;
+  border-radius:25px;
+  font-family:'Pacifico',cursive;
   font-size:28px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* confetti */
-.confetti{
-  position:fixed;
-  width:12px;
-  height:12px;
-  top:-20px;
-  animation:fall linear forwards;
-}
-@keyframes fall{
-  to{transform:translateY(110vh) rotate(720deg);} 
-}
+.confetti{position:fixed;width:12px;height:12px;top:-20px;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);}}
 
-/* floating hearts */
-.heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:20px;
-  animation:float linear forwards;
-}
-@keyframes float{
-  to{transform:translateY(-110vh);} 
-}
+.heart{position:fixed;bottom:-20px;font-size:20px;animation:float linear forwards;}
+@keyframes float{to{transform:translateY(-110vh);}}
 </style>
 </head>
 
@@ -124,28 +120,25 @@ button{
 <div id="intro" onclick="startApp()">Tap to open ❤️</div>
 
 <div id="page1" class="page">
-  <div class="timer" id="timer1"></div>
+  <div class="timer cute-font" id="timer1"></div>
   <img src="us.jpg" class="main-photo">
-  <h2 class="valentine-title">Anu, will you be my Valentine? ❤️</h2>
+  <div class="anu-glow">Anu</div>
+  <div class="valentine-sub">Will you be my Valentine? ❤️</div>
   <button class="yes" onclick="showLove()">YES</button>
   <button class="no" id="noBtn">NO</button>
 </div>
 
 <div id="page2" class="page">
-  <div class="timer" id="timer2"></div>
-  <p>I miss you so much, I know things are a little awkward rn, but I love you ❤️</p>
+  <div class="timer cute-font" id="timer2"></div>
+  <p class="cute-font">I miss you so much, I know things are a little awkward rn, but I love you ❤️</p>
   <div class="carousel" id="carousel"></div>
 </div>
 
-<div id="popup">I love you Anu ❤️</div>
+<div id="popup"><div class="popup-box">I love you, Anu ❤️</div></div>
 
 <script>
-function startApp(){
-  intro.style.display="none";
-  page1.classList.add("active");
-}
+function startApp(){intro.style.display="none";page1.classList.add("active");}
 
-/* timer */
 const startDate=new Date("2024-10-25");
 function updateTimer(){
   const diff=new Date()-startDate;
@@ -159,26 +152,17 @@ function updateTimer(){
 setInterval(updateTimer,1000);
 updateTimer();
 
-/* floating NO */
 noBtn.addEventListener("touchstart",moveNo);
 noBtn.addEventListener("mouseover",moveNo);
-function moveNo(){
-  noBtn.style.top=Math.random()*80+"vh";
-  noBtn.style.left=Math.random()*80+"vw";
-}
+function moveNo(){noBtn.style.top=Math.random()*80+"vh";noBtn.style.left=Math.random()*80+"vw";}
 
-/* YES click */
 function showLove(){
   popup.style.display="flex";
   createConfetti();
-  setTimeout(()=>{
-    popup.style.display="none";
-    page1.classList.remove("active");
-    page2.classList.add("active");
-  },2000);
+  createHearts();
+  setTimeout(()=>{popup.style.display="none";page1.classList.remove("active");page2.classList.add("active");},2000);
 }
 
-/* confetti */
 function createConfetti(){
   for(let i=0;i<80;i++){
     const c=document.createElement("div");
@@ -191,19 +175,18 @@ function createConfetti(){
   }
 }
 
-/* constant floating hearts */
-function createHeart(){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="💗";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=(5+Math.random()*3)+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),8000);
+function createHearts(){
+  for(let i=0;i<25;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(4+Math.random()*3)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  }
 }
-setInterval(createHeart,800);
 
-/* gallery */
 for(let i=1;i<=22;i++){
   const img=document.createElement("img");
   img.src="image"+i+".jpg";
