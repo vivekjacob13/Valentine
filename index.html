@@ -4,7 +4,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anu ❤️ Vivek</title>
 
-<!-- Cute handwritten fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -15,29 +14,18 @@ body{
     background:linear-gradient(to bottom,#ffe4ec,#fff5f8);
     color:#ff4d6d;
     padding:20px;
-    overflow-x:hidden;
-    animation:fadeIn 1.5s ease;
-}
-
-@keyframes fadeIn{
-    from{opacity:0;transform:translateY(15px);}
-    to{opacity:1;transform:translateY(0);}
 }
 
 h1{
     font-family:'Pacifico',cursive;
-    font-size:42px;
-    margin-top:30px;
-    text-shadow:0 0 10px rgba(255,100,140,0.4);
+    font-size:40px;
 }
-
-p{font-size:20px;}
 
 .main-img{
     width:80%;
     max-width:300px;
     border-radius:30px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 
 button{
@@ -52,15 +40,24 @@ button{
 .yes{background:#ff4d6d;color:white;}
 .no{background:#aaa;color:white;position:absolute;}
 
-.petal{
-    position:fixed;
-    top:-20px;
-    font-size:18px;
-    animation:fall linear infinite;
+.header{
+    position:sticky;
+    top:0;
+    background:#fff5f8;
+    padding-bottom:10px;
 }
 
-@keyframes fall{
-    to{transform:translateY(900px);opacity:0;}
+.scroll-gallery{
+    display:flex;
+    overflow-x:auto;
+    gap:20px;
+    padding:20px;
+}
+
+.scroll-gallery img{
+    width:260px;
+    border-radius:25px;
+    flex:0 0 auto;
 }
 </style>
 </head>
@@ -68,7 +65,7 @@ button{
 <body>
 
 <h1>Anu ❤️</h1>
-<div id="timer" style="font-size:22px;margin-top:10px;"></div>
+<div id="timer" style="font-size:22px;"></div>
 <p>Will you be my Valentine?</p>
 
 <img src="us.jpg" class="main-img"><br>
@@ -91,7 +88,7 @@ function updateTimer(){
 setInterval(updateTimer,60000);
 updateTimer();
 
-/* MOVING NO */
+/* MOVING NO BUTTON */
 const noBtn=document.getElementById("noBtn");
 noBtn.addEventListener("mouseover",()=>{
     noBtn.style.left=Math.random()*80+"%";
@@ -101,47 +98,31 @@ noBtn.addEventListener("mouseover",()=>{
 /* YES PAGE */
 function yes(){
     document.body.innerHTML=`
-        <h1>Anu ❤️ Vivek</h1>
-        <div id="timer" style="font-size:22px;margin:20px;"></div>
-        <p>I miss you so much, I know things are a little awkward rn, but I love you</p>
-        <div id="gallery"></div>
+        <div class="header">
+            <h1>Anu ❤️ Vivek</h1>
+            <div id="timer" style="font-size:22px;"></div>
+            <p>I miss you so much, I know things are a little awkward rn, but I love you ❤️</p>
+        </div>
+
+        <div id="gallery" class="scroll-gallery"></div>
     `;
     updateTimer();
     setInterval(updateTimer,60000);
     startGallery();
-    petals();
 }
 
 /* GALLERY */
 function startGallery(){
     const photos=[];
-    for(let i=1;i<=22;i++){photos.push("image"+i+".jpg");}
-    let i=0;
-    const interval=setInterval(()=>{
-        if(i>=photos.length){clearInterval(interval);return;}
+    for(let i=1;i<=22;i++){
+        photos.push("image"+i+".jpg");
+    }
+    const gallery=document.getElementById("gallery");
+    photos.forEach(src=>{
         const img=document.createElement("img");
-        img.src=photos[i];
-        img.style.width="80%";
-        img.style.maxWidth="300px";
-        img.style.borderRadius="30px";
-        img.style.margin="15px auto";
-        img.style.display="block";
-        document.getElementById("gallery").appendChild(img);
-        i++;
-    },1500);
-}
-
-/* PETALS */
-function petals(){
-    setInterval(()=>{
-        const p=document.createElement("div");
-        p.classList.add("petal");
-        p.innerHTML="🌸";
-        p.style.left=Math.random()*100+"vw";
-        p.style.animationDuration=(Math.random()*3+5)+"s";
-        document.body.appendChild(p);
-        setTimeout(()=>p.remove(),8000);
-    },300);
+        img.src=src;
+        gallery.appendChild(img);
+    });
 }
 </script>
 
