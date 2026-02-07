@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anu ❤️ Vivek</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            overflow: hidden;
+        }
+
+        h1 { margin-top: 120px; font-size: 48px; }
+        p { font-size: 24px; }
+
+        button {
+            font-size: 22px;
+            padding: 12px 30px;
+            margin: 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .yes { background-color: #ff4d6d; color: white; }
+        .no { background-color: #555; color: white; }
+
+        .heart {
+            position: fixed;
+            bottom: -20px;
+            font-size: 20px;
+            animation: float 6s linear infinite;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-800px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Anu ❤️</h1>
+<p>Will you be my Valentine? — Vivek</p>
+
+<button class="yes" onclick="yes()">Yes 💕</button>
+<button class="no" onclick="no()">No 😢</button>
+
+<script>
+function yes() {
+    document.body.innerHTML =
+    "<h1>Anu, you just made Vivek the happiest person alive ❤️</h1><p>I love you!</p>";
+    startHearts();
+}
+
+function no() {
+    alert("Are you sure? Try Yes 😄");
+}
+
+function startHearts(){
+    setInterval(()=>{
+        const heart=document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML='❤️';
+        heart.style.left=Math.random()*100+'vw';
+        heart.style.fontSize=(Math.random()*20+20)+'px';
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),6000);
+    },300);
+}
+</script>
+
+</body>
+</html>
