@@ -1,129 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anu ❤️ Vivek</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<title>For You ❤️</title>
 
 <style>
 body{
-    margin:0;
-    text-align:center;
-    font-family:'Quicksand',sans-serif;
-    background:linear-gradient(to bottom,#ffe4ec,#fff5f8);
-    color:#ff4d6d;
-    padding:20px;
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#ffd6e7,#fff0f5);
+  overflow-x:hidden;
 }
 
-h1{
-    font-family:'Pacifico',cursive;
-    font-size:40px;
+/* floating hearts */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:20px;
+  animation:float 8s linear infinite;
+  opacity:0.6;
+}
+@keyframes float{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-110vh)}
 }
 
-.main-img{
-    width:80%;
-    max-width:300px;
-    border-radius:30px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
-}
-
-button{
-    font-size:20px;
-    padding:12px 30px;
-    margin:15px;
-    border:none;
-    border-radius:40px;
-    cursor:pointer;
-}
-
-.yes{background:#ff4d6d;color:white;}
-.no{background:#aaa;color:white;position:absolute;}
-
+/* header glass card */
 .header{
-    position:sticky;
-    top:0;
-    background:#fff5f8;
-    padding-bottom:10px;
+  margin:20px;
+  padding:20px;
+  border-radius:25px;
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(10px);
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+  text-align:center;
 }
 
-.scroll-gallery{
-    display:flex;
-    overflow-x:auto;
-    gap:20px;
-    padding:20px;
+.timer{
+  font-size:22px;
+  font-weight:bold;
+  color:#ff4d88;
 }
 
-.scroll-gallery img{
-    width:260px;
-    border-radius:25px;
-    flex:0 0 auto;
+.message{
+  margin-top:10px;
+  font-size:18px;
+  color:#333;
+}
+
+/* carousel */
+.carousel{
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  gap:20px;
+  padding:20px;
+}
+
+.carousel img{
+  flex:0 0 80%;
+  height:320px;
+  object-fit:cover;
+  border-radius:25px;
+  scroll-snap-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* footer */
+.footer{
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  margin:20px;
+  color:#ff4d88;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Anu ❤️</h1>
-<div id="timer" style="font-size:22px;"></div>
-<p>Will you be my Valentine?</p>
+<div class="header">
+  <div class="timer" id="timer"></div>
+  <div class="message">
+    I miss you so much, I know things are a little awkward rn, but I love you ❤️
+  </div>
+</div>
 
-<img src="us.jpg" class="main-img"><br>
+<div class="carousel" id="carousel"></div>
 
-<button class="yes" onclick="yes()">Yes 💕</button>
-<button class="no" id="noBtn">No 😢</button>
+<div class="footer">
+  Will you be my Valentine?
+</div>
 
 <script>
-/* TIMER */
-const startDate=new Date("October 25, 2024 00:00:00").getTime();
+/* timer */
+const startDate = new Date("2024-10-25");
+
 function updateTimer(){
-    const now=new Date().getTime();
-    const diff=now-startDate;
-    const days=Math.floor(diff/(1000*60*60*24));
-    const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-    const minutes=Math.floor((diff%(1000*60*60))/(1000*60));
-    document.getElementById("timer").innerHTML=
-    "Together for: "+days+" days "+hours+" hrs "+minutes+" mins ❤️";
+  const now = new Date();
+  const diff = now - startDate;
+
+  const days = Math.floor(diff/(1000*60*60*24));
+  const hours = Math.floor((diff/(1000*60*60))%24);
+  const mins = Math.floor((diff/(1000*60))%60);
+
+  document.getElementById("timer").innerHTML =
+    days+" days "+hours+" hrs "+mins+" mins together ❤️";
 }
-setInterval(updateTimer,60000);
+setInterval(updateTimer,1000);
 updateTimer();
 
-/* MOVING NO BUTTON */
-const noBtn=document.getElementById("noBtn");
-noBtn.addEventListener("mouseover",()=>{
-    noBtn.style.left=Math.random()*80+"%";
-    noBtn.style.top=Math.random()*80+"%";
+/* images auto load */
+const images=["us.jpg"];
+for(let i=1;i<=22;i++){
+  images.push("image"+i+".jpg");
+}
+const carousel=document.getElementById("carousel");
+images.forEach(src=>{
+  const img=document.createElement("img");
+  img.src=src;
+  carousel.appendChild(img);
 });
 
-/* YES PAGE */
-function yes(){
-    document.body.innerHTML=`
-        <div class="header">
-            <h1>Anu ❤️ Vivek</h1>
-            <div id="timer" style="font-size:22px;"></div>
-            <p>I miss you so much, I know things are a little awkward rn, but I love you ❤️</p>
-        </div>
-
-        <div id="gallery" class="scroll-gallery"></div>
-    `;
-    updateTimer();
-    setInterval(updateTimer,60000);
-    startGallery();
-}
-
-/* GALLERY */
-function startGallery(){
-    const photos=[];
-    for(let i=1;i<=22;i++){
-        photos.push("image"+i+".jpg");
-    }
-    const gallery=document.getElementById("gallery");
-    photos.forEach(src=>{
-        const img=document.createElement("img");
-        img.src=src;
-        gallery.appendChild(img);
-    });
-}
+/* floating hearts generator */
+setInterval(()=>{
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="❤️";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.animationDuration=(5+Math.random()*5)+"s";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),8000);
+},800);
 </script>
 
 </body>
