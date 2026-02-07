@@ -1,39 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anu ❤️ Vivek</title>
+
+<!-- Cute handwritten fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body{
     margin:0;
     text-align:center;
-    font-family:Arial;
-    background:linear-gradient(to right,#ff758c,#ff7eb3);
-    color:white;
+    font-family:'Quicksand',sans-serif;
+    background:linear-gradient(to bottom,#ffe4ec,#fff5f8);
+    color:#ff4d6d;
+    padding:20px;
     overflow-x:hidden;
+    animation:fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(15px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+h1{
+    font-family:'Pacifico',cursive;
+    font-size:42px;
+    margin-top:30px;
+    text-shadow:0 0 10px rgba(255,100,140,0.4);
+}
+
+p{font-size:20px;}
+
+.main-img{
+    width:80%;
+    max-width:300px;
+    border-radius:30px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
 button{
-    font-size:22px;
+    font-size:20px;
     padding:12px 30px;
-    margin:20px;
+    margin:15px;
     border:none;
-    border-radius:30px;
+    border-radius:40px;
     cursor:pointer;
 }
 
 .yes{background:#ff4d6d;color:white;}
-.no{background:#444;color:white;position:absolute;}
+.no{background:#aaa;color:white;position:absolute;}
 
-.heart{
+.petal{
     position:fixed;
-    bottom:-20px;
-    animation:float 6s linear infinite;
+    top:-20px;
+    font-size:18px;
+    animation:fall linear infinite;
 }
 
-@keyframes float{
-    from{transform:translateY(0);opacity:1;}
-    to{transform:translateY(-800px);opacity:0;}
+@keyframes fall{
+    to{transform:translateY(900px);opacity:0;}
 }
 </style>
 </head>
@@ -41,92 +68,79 @@ button{
 <body>
 
 <h1>Anu ❤️</h1>
-
-<div id="timer" style="font-size:24px;margin-top:10px;"></div>
-
+<div id="timer" style="font-size:22px;margin-top:10px;"></div>
 <p>Will you be my Valentine? — Vivek</p>
 
-<img src="us.jpg" style="width:260px;border-radius:20px;"><br><br>
-<img src="funny.gif" style="width:220px;border-radius:15px;">
+<img src="us.jpg" class="main-img"><br>
 
-<br>
 <button class="yes" onclick="yes()">Yes 💕</button>
 <button class="no" id="noBtn">No 😢</button>
 
 <script>
-/* RELATIONSHIP TIMER */
-const startDate = new Date("October 25, 2024 00:00:00").getTime();
-
+/* TIMER */
+const startDate=new Date("October 25, 2024 00:00:00").getTime();
 function updateTimer(){
-    const now = new Date().getTime();
-    const diff = now - startDate;
-
+    const now=new Date().getTime();
+    const diff=now-startDate;
     const days=Math.floor(diff/(1000*60*60*24));
     const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
     const minutes=Math.floor((diff%(1000*60*60))/(1000*60));
-
-    document.getElementById("timer").innerHTML =
+    document.getElementById("timer").innerHTML=
     "Together for: "+days+" days "+hours+" hrs "+minutes+" mins ❤️";
 }
 setInterval(updateTimer,60000);
 updateTimer();
 
-/* MOVING NO BUTTON */
+/* MOVING NO */
 const noBtn=document.getElementById("noBtn");
 noBtn.addEventListener("mouseover",()=>{
     noBtn.style.left=Math.random()*80+"%";
     noBtn.style.top=Math.random()*80+"%";
 });
 
-/* YES CLICK */
+/* YES PAGE */
 function yes(){
     document.body.innerHTML=`
         <h1>Anu ❤️ Vivek</h1>
-        <div id="timer" style="font-size:24px;margin:20px;"></div>
+        <div id="timer" style="font-size:22px;margin:20px;"></div>
         <p>Every moment with you is my favourite memory.</p>
         <div id="gallery"></div>
     `;
     updateTimer();
     setInterval(updateTimer,60000);
     startGallery();
-    startHearts();
+    petals();
 }
 
 /* GALLERY */
 function startGallery(){
     const photos=[];
-    for(let i=1;i<=22;i++){
-        photos.push("image"+i+".jpg");
-    }
-
+    for(let i=1;i<=22;i++){photos.push("image"+i+".jpg");}
     let i=0;
     const interval=setInterval(()=>{
         if(i>=photos.length){clearInterval(interval);return;}
-
         const img=document.createElement("img");
         img.src=photos[i];
-        img.style.width="260px";
-        img.style.borderRadius="20px";
-        img.style.margin="15px";
+        img.style.width="80%";
+        img.style.maxWidth="300px";
+        img.style.borderRadius="30px";
+        img.style.margin="15px auto";
         img.style.display="block";
-        img.style.marginLeft="auto";
-        img.style.marginRight="auto";
-
         document.getElementById("gallery").appendChild(img);
         i++;
     },1500);
 }
 
-/* FLOATING HEARTS */
-function startHearts(){
+/* PETALS */
+function petals(){
     setInterval(()=>{
-        const heart=document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML="❤️";
-        heart.style.left=Math.random()*100+"vw";
-        heart.style.fontSize=(Math.random()*20+20)+"px";
-        document.body.appendChild(heart);
-        setTimeout(()=>heart.remove(),6000);
+        const p=document.createElement("div");
+        p.classList.add("petal");
+        p.innerHTML="🌸";
+        p.style.left=Math.random()*100+"vw";
+        p.style.animationDuration=(Math.random()*3+5)+"s";
+        document.body.appendChild(p);
+        setTimeout(()=>p.remove(),8000);
     },300);
 }
 </script>
